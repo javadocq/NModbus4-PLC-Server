@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NModbus4-PLC-Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2cce208bc4a6973e11ffb56916202e2fa6e683d3")]
 [assembly: System.Reflection.AssemblyProductAttribute("NModbus4-PLC-Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NModbus4-PLC-Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

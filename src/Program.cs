@@ -1,10 +1,104 @@
-﻿namespace NModbus4_PLC_Server.src
+﻿using Modbus.Device;
+using Modbus.Data;
+using System.Net.Sockets;
+
+namespace NModbus4_PLC_Server.src
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Console.WriteLine("NModbus4 PLC Server is running...");
+
+            // 머신 포트 번호 설정
+            int[] ports = new int[] { 502, 503, 504, 505 };
+            
+            foreach(int port in ports) {
+                Task.Run(() => startSlave(port)); // 각 기계마다 대기상태로 진입, 비동기로 실행하여 동시에 여러 기계가 연결될 수 있도록 함
+            }
+
+            Console.WriteLine("PLC 가상 서버 시작, 각 포트별로 머신 대기 중...");
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadLine();
+
+
+        }
+
+        public static void startSlave(int port)
+        {
+            try
+            {
+                TcpListener slaveTcpListener = new TcpListener(System.Net.IPAddress.Any, port);
+                slaveTcpListener.Start(); // TCP 리스너 시작
+
+                Console.WriteLine("Machine on port " + port + " is waiting for connection...");
+
+                byte unitId = 1; // 유닛 ID 설정
+                DataStore dataStore = DataStoreFactory.CreateDefaultDataStore(); // 데이터 저장소 생성
+                ModbusSlave slave = ModbusTcpSlave.CreateTcp(unitId, slaveTcpListener); // Modbus TCP 슬레이브 생성
+                slave.DataStore = dataStore; // 데이터 저장소 할당
+
+                Console.WriteLine("Machine on port" + port + " is ready to accept Modbus requests...");
+
+                dataStore.CoilDiscretes[1] = false; // 기계 상태를 설정 (true : 기계 가동 중, false : 기계 정지 중)
+
+                
+                Task.Run(() => slave.Listen()); // 슬레이브 시작, 비동기로 실행하여 동시에 여러 기계가 연결될 수 있도록 함
+                Console.WriteLine($"[Port {port}] 가상 PLC 서버 시작. 연결 대기 중...");
+
+                string csvFilePath = "data.csv";
+                if (!File.Exists(csvFilePath))
+                {
+                    Console.WriteLine($"[Port {port}] {csvFilePath} 파일이 없습니다.");
+                    return;
+                }
+
+                Task.Run(() =>
+                {
+                    while (true)
+                    {
+                        if (dataStore.CoilDiscretes[1])
+                        {
+                            Console.WriteLine("[Port " + port + "] Machine is running. Reading data from CSV...");
+                            var lines = File.ReadAllLines(csvFilePath);
+                            foreach(var line in lines)
+                            {
+                                if(!dataStore.CoilDiscretes[1])
+                                {
+                                    Console.WriteLine("[Port " + port + "] Machine stopped. Stopping data reading...");
+                                    break;
+                                }
+
+                                var parts = line.Split(',');
+                                if (parts.Length < 3) continue;
+
+                                ushort temper = ushort.Parse(parts[1]);
+                                ushort pressure = ushort.Parse(parts[2]);
+
+                                lock (dataStore.SyncRoot)
+                                {
+                                    dataStore.HoldingRegisters[0] = temper; // 온도 데이터 저장
+                                    dataStore.HoldingRegisters[1] = pressure; // 압력 데이터 저장
+                                }
+
+                                Console.WriteLine($"[Port {port}] Updated Holding Registers: Temperature={temper}, Pressure={pressure}");
+                                Thread.Sleep(1000); // 1초마다 데이터 업데이트
+
+                            }
+                        }
+                        else
+                        {
+                            // 정지 상태일 때는 CPU 점유율 낮추기 위해 대기
+                            Thread.Sleep(500);
+                        }
+                    }
+                });
+
+
+            }
+            catch (Exception ex) { 
+                Console.WriteLine("[Port " +  port + "] : " + ex.ToString());
+            }
         }
     }
 }

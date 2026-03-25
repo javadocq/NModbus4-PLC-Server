@@ -1,8 +1,23 @@
 {
   "version": 2,
-  "dgSpecHash": "bKEutPYkfd0=",
+  "dgSpecHash": "P4ClE3YJo2A=",
   "success": true,
   "projectFilePath": "C:\\Users\\User\\Desktop\\wpf\\NModbus4-PLC-Server\\NModbus4-PLC-Server.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
+  "expectedPackageFiles": [
+    "C:\\Users\\User\\.nuget\\packages\\nmodbus4\\2.1.0\\nmodbus4.2.1.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "message": "프로젝트 대상 프레임워크 'net10.0' 대신 '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1'을(를) 사용하여 패키지 'NModbus4 2.1.0'을(를) 복원했습니다. 이 패키지는 프로젝트와 완벽하게 호환되지 않을 수 있습니다.",
+      "projectPath": "C:\\Users\\User\\Desktop\\wpf\\NModbus4-PLC-Server\\NModbus4-PLC-Server.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\User\\Desktop\\wpf\\NModbus4-PLC-Server\\NModbus4-PLC-Server.csproj",
+      "libraryId": "NModbus4",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }

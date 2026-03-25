@@ -1,0 +1,6 @@
+C:\Users\User\Desktop\wpf\NModbus4-PLC-Server\obj\Debug\net10.0\NModbus4-PLC-Server.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\wpf\NModbus4-PLC-Server\obj\Debug\net10.0\NModbus4-PLC-Server.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\wpf\NModbus4-PLC-Server\obj\Debug\net10.0\NModbus4-PLC-Server.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\wpf\NModbus4-PLC-Server\obj\Debug\net10.0\NModbus4-PLC-Server.AssemblyInfo.cs
+C:\Users\User\Desktop\wpf\NModbus4-PLC-Server\obj\Debug\net10.0\NModbus4-PLC-Server.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\wpf\NModbus4-PLC-Server\obj\Debug\net10.0\NModbus4-PLC-Server.sourcelink.json
