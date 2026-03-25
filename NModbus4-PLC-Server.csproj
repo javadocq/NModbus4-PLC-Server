@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="sample_data\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="NModbus4" Version="2.1.0" />
   </ItemGroup>
 

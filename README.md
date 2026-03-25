@@ -30,7 +30,6 @@
 /
 ├── src/
 │   ├── Program.cs           # 가상 PLC 서버 핵심 로직 (Multi-threaded)
+│   ├── CreateSampleCsv.cs    # 샘플 CSV 파일 생성 스크립트
 │   └── FakePLCServer.csproj  # 프로젝트 설정 및 의존성 관리
-├── sample_data/
-│   └── data.csv             # 시뮬레이션용 센서 데이터 샘플 (1,500 rows)
 └── README.md                # 프로젝트 가이드 및 문서화

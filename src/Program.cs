@@ -1,5 +1,6 @@
-﻿using Modbus.Device;
-using Modbus.Data;
+﻿using Modbus.Data;
+using Modbus.Device;
+using NModbus4_PLC_Server.sample_data;
 using System.Net.Sockets;
 
 namespace NModbus4_PLC_Server.src
@@ -10,11 +11,20 @@ namespace NModbus4_PLC_Server.src
         {
             Console.WriteLine("NModbus4 PLC Server is running...");
 
+            // 현재 프로그램이 실행되는 폴더(bin/Debug/...)의 경로를 가져옵니다.
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            // 그 폴더 안에 data.csv라는 이름을 붙입니다.
+            string filePath = Path.Combine(baseDirectory, "data.csv");
+
+            // 이제 이 filePath를 생성기와 서버 시작 함수에 전달하면 끝
+            CreateSampleCsv.CreateCsvFile(filePath);
+
             // 머신 포트 번호 설정
             int[] ports = new int[] { 502, 503, 504, 505 };
             
             foreach(int port in ports) {
-                Task.Run(() => startSlave(port)); // 각 기계마다 대기상태로 진입, 비동기로 실행하여 동시에 여러 기계가 연결될 수 있도록 함
+                Task.Run(() => startSlave(port, filePath)); // 각 기계마다 대기상태로 진입, 비동기로 실행하여 동시에 여러 기계가 연결될 수 있도록 함
             }
 
             Console.WriteLine("PLC 가상 서버 시작, 각 포트별로 머신 대기 중...");
@@ -24,7 +34,7 @@ namespace NModbus4_PLC_Server.src
 
         }
 
-        public static void startSlave(int port)
+        public static void startSlave(int port, string csvFilePath)
         {
             try
             {
@@ -46,7 +56,6 @@ namespace NModbus4_PLC_Server.src
                 Task.Run(() => slave.Listen()); // 슬레이브 시작, 비동기로 실행하여 동시에 여러 기계가 연결될 수 있도록 함
                 Console.WriteLine($"[Port {port}] 가상 PLC 서버 시작. 연결 대기 중...");
 
-                string csvFilePath = "data.csv";
                 if (!File.Exists(csvFilePath))
                 {
                     Console.WriteLine($"[Port {port}] {csvFilePath} 파일이 없습니다.");
