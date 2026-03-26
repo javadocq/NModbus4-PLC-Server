@@ -69,27 +69,27 @@ namespace NModbus4_PLC_Server.src
                         {
                             Console.WriteLine("[Port " + port + "] Machine is running. Reading data from CSV...");
                             var lines = File.ReadAllLines(csvFilePath);
-                            foreach(var line in lines)
+                            for (int i = 1; i < lines.Length; i++)
                             {
-                                if(!dataStore.CoilDiscretes[1])
+                                if (!dataStore.CoilDiscretes[1])
                                 {
                                     Console.WriteLine("[Port " + port + "] Machine stopped. Stopping data reading...");
                                     break;
                                 }
 
-                                var parts = line.Split(',');
+                                var parts = lines[i].Split(',');
                                 if (parts.Length < 3) continue;
 
-                                ushort temper = ushort.Parse(parts[1]);
-                                ushort pressure = ushort.Parse(parts[2]);
+                                ushort Temper = ushort.Parse(parts[1]);
+                                ushort Pressure = ushort.Parse(parts[2]);
 
                                 lock (dataStore.SyncRoot)
                                 {
-                                    dataStore.HoldingRegisters[0] = temper; // 온도 데이터 저장
-                                    dataStore.HoldingRegisters[1] = pressure; // 압력 데이터 저장
+                                    dataStore.HoldingRegisters[1] = Temper; // 온도 데이터 저장
+                                    dataStore.HoldingRegisters[2] = Pressure; // 압력 데이터 저장
                                 }
 
-                                Console.WriteLine($"[Port {port}] Updated Holding Registers: Temperature={temper}, Pressure={pressure}");
+                                Console.WriteLine($"[Port {port}] Updated Holding Registers: Temperature={Temper}, Pressure={Pressure}");
                                 Thread.Sleep(1000); // 1초마다 데이터 업데이트
 
                             }
