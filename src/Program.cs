@@ -1,6 +1,5 @@
 ﻿using Modbus.Data;
 using Modbus.Device;
-using NModbus4_PLC_Server.sample_data;
 using System.Net.Sockets;
 
 namespace NModbus4_PLC_Server.src
@@ -18,7 +17,7 @@ namespace NModbus4_PLC_Server.src
             string filePath = Path.Combine(baseDirectory, "data.csv");
 
             // 이제 이 filePath를 생성기와 서버 시작 함수에 전달하면 끝
-            CreateSampleCsv.CreateCsvFile(filePath);
+            CreateSampleCSV.CreateCsvFile(filePath);
 
             // 머신 포트 번호 설정
             int[] ports = new int[] { 502, 503, 504, 505 };
